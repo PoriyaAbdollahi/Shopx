@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">Shopx</string>
+    <string name="user_name">Username</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="submit">SUBMIT</string>
+    <string name="logo">Logo</string>
+    <string name="login_if_you_have_account">If You Have Account Then Login </string>
+    <string name="next">NEXT</string>
+</resources>
