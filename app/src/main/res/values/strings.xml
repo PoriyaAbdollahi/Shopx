@@ -6,6 +6,10 @@
     <string name="confirm_password">Confirm Password</string>
     <string name="submit">SUBMIT</string>
     <string name="logo">Logo</string>
-    <string name="login_if_you_have_account">If You Have Account Then Login </string>
+    <string name="login_if_you_have_account">If You Do not Have Account Then SignUp </string>
+    <string name="Sign_up_if_you_have_account">If You Have Account Then Login </string>
     <string name="next">NEXT</string>
+    <string name="login">LOGIN</string>
+    <string name="phone">Phone : 09123456789</string>
+    <string name="address">Address</string>
 </resources>
