@@ -12,4 +12,8 @@
     <string name="login">LOGIN</string>
     <string name="phone">Phone : 09123456789</string>
     <string name="address">Address</string>
+    <string name="profile">profile</string>
+    <string name="shopcart">shopCart</string>
+    <string name="truck">Truck</string>
+    <string name="shopbag">ShopBag</string>
 </resources>
