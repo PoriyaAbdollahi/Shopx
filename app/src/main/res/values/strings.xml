@@ -16,4 +16,13 @@
     <string name="shopcart">shopCart</string>
     <string name="truck">Truck</string>
     <string name="shopbag">ShopBag</string>
+    <string name="payment_list">Payment List</string>
+    <string name="my_address">MyAddress</string>
+    <string name="change_password">change Password</string>
+    <string name="setting">Setting</string>
+    <string name="icon1">icon1</string>
+    <string name="icon2">icon2</string>
+    <string name="icon3">icon3</string>
+    <string name="icon4">icon4</string>
+    <string name="icon5">icon5</string>
 </resources>

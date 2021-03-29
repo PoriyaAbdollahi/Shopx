@@ -4,12 +4,13 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="176dp"
-    android:background="#B11414">
+    android:background="#FB743E">
 <ImageView
+    android:contentDescription="@string/profile"
     android:layout_width="wrap_content"
     android:layout_height="176dp"
     android:layout_gravity="center"
     android:padding="50dp"
-    android:src="@drawable/shopingcart"/>
+    android:src="@android:drawable/sym_def_app_icon"/>
 
 </LinearLayout>

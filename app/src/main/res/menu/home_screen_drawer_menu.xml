@@ -4,23 +4,21 @@
     tools:showIn="navigation_view">
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_message"
-            android:title="Message" />
+            android:icon="@drawable/cardpayment"
+            android:id="@+id/payment_list"
+            android:title="@string/payment_list" />
         <item
-            android:id="@+id/nav_chat"
-            android:title="Chat" />
+            android:icon="@drawable/myaddress"
+            android:id="@+id/user_address"
+            android:title="@string/my_address" />
         <item
-            android:id="@+id/nav_profile"
-            android:title="Profile" />
+            android:icon="@drawable/change_password_icon"
+            android:id="@+id/change_password"
+            android:title="@string/change_password" />
+        <item
+            android:icon="@drawable/setting"
+            android:id="@+id/drawer_setting"
+            android:title="@string/setting" />
     </group>
-    <item android:title="Communicate">
-        <menu>
-            <item
-                android:id="@+id/nav_share"
-                android:title="Share" />
-            <item
-                android:id="@+id/nav_send"
-                android:title="Send" />
-        </menu>
-    </item>
+
 </menu>

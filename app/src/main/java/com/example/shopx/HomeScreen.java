@@ -26,12 +26,9 @@ ImageView drawerTrigger;
         nv=findViewById(R.id.navigation_view);
         drawerTrigger=findViewById(R.id.drawer_trigger);
 
-        drawerTrigger.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(HomeScreen.this, "clicked", Toast.LENGTH_SHORT).show();
-                drawer.openDrawer(GravityCompat.START);
-            }
+        drawerTrigger.setOnClickListener(v -> {
+            Toast.makeText(HomeScreen.this, "clicked", Toast.LENGTH_SHORT).show();
+            drawer.openDrawer(GravityCompat.END);
         });
     }
 
