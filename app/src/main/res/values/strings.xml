@@ -25,4 +25,12 @@
     <string name="icon3">icon3</string>
     <string name="icon4">icon4</string>
     <string name="icon5">icon5</string>
+    <string name="add_to_cart">ADD TO CART</string>
+    <string name="zero">0</string>
+    <string name="negative">-</string>
+    <string name="plus">+</string>
+    <string name="lore">Lorem ipsum is placeholder text commonly used in the graphic, print, and publishing industries for previewing layouts and visual mockups.</string>
+    <string name="product_name">Iphone 11</string>
+    <string name="product_price">9999$</string>
+    <string name="favorite">favorite</string>
 </resources>

@@ -14,17 +14,17 @@ import com.google.android.material.navigation.NavigationView;
 
 
 public class HomeScreen extends AppCompatActivity {
-DrawerLayout drawer ;
-NavigationView nv;
-ImageView drawerTrigger;
+    DrawerLayout drawer;
+    NavigationView nv;
+    ImageView drawerTrigger;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_screen);
-        drawer=findViewById(R.id.home_screen_drawer);
-        nv=findViewById(R.id.navigation_view);
-        drawerTrigger=findViewById(R.id.drawer_trigger);
+        drawer = findViewById(R.id.home_screen_drawer);
+        nv = findViewById(R.id.navigation_view);
+        drawerTrigger = findViewById(R.id.drawer_trigger);
 
         drawerTrigger.setOnClickListener(v -> {
             Toast.makeText(HomeScreen.this, "clicked", Toast.LENGTH_SHORT).show();
