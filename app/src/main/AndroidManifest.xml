@@ -9,6 +9,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Shopx">
+        <activity android:name=".Basket"></activity>
         <activity android:name=".ProductPage">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -16,9 +17,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".HomeScreen">
-        </activity>
-        <activity android:name=".InfoGetter"></activity>
+        <activity android:name=".HomeScreen"></activity>
+        <activity android:name=".InfoGetter" />
         <activity android:name=".Login" />
         <activity android:name=".MainActivity" />
     </application>
