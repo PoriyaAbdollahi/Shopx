@@ -36,4 +36,6 @@
     <string name="check_out">CHECK OUT</string>
     <string name="total">Total:</string>
     <string name="your_basket">Your Basket</string>
+    <string name="i_don_t_remember_my_password">I don\'t remember my password</string>
+    <string name="product_photo">productPhoto</string>
 </resources>

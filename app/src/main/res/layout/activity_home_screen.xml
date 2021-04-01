@@ -66,7 +66,7 @@
             android:layout_height="0dp"
             android:layout_marginTop="16dp"
             android:orientation="vertical"
-            app:layout_constraintBottom_toTopOf="@+id/button"
+            app:layout_constraintBottom_toTopOf="@+id/order_btn"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/searchView2">
@@ -78,29 +78,34 @@
 
                 <TextView
                     style="@style/Home_screen_style"
-
+                    android:id="@+id/text_category_one"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
 
                 <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/category_one"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
 
                 <TextView
+                    android:id="@+id/text_category_two"
                     style="@style/Home_screen_style"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
 
                 <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/category_two"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
 
                 <TextView
+                    android:id="@+id/text_category_three"
                     style="@style/Home_screen_style"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
 
                 <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/category_three"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
 
@@ -109,7 +114,7 @@
 
 
         <ImageButton
-            android:id="@+id/button2"
+            android:id="@+id/shop"
             android:layout_width="0dp"
             android:layout_height="80dp"
             android:background="#007580"
@@ -118,12 +123,12 @@
             android:scaleType="centerInside"
             android:src="@drawable/shopbag"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/button"
+            app:layout_constraintEnd_toStartOf="@+id/order_btn"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/button" />
+            app:layout_constraintTop_toTopOf="@+id/order_btn" />
 
         <ImageButton
-            android:id="@+id/button"
+            android:id="@+id/order_btn"
             android:layout_width="0dp"
             android:layout_height="80dp"
             android:background="#C5D7BD"
@@ -134,10 +139,10 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="1.0"
-            app:layout_constraintStart_toEndOf="@+id/button2" />
+            app:layout_constraintStart_toEndOf="@+id/shop" />
 
         <ImageButton
-            android:id="@+id/button3"
+            android:id="@+id/basket"
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:background="@drawable/homescreen_shop_btn_back"
@@ -145,10 +150,10 @@
             android:padding="15dp"
             android:scaleType="centerInside"
             android:src="@drawable/shopingcart"
-            app:layout_constraintBottom_toTopOf="@+id/button"
-            app:layout_constraintEnd_toStartOf="@+id/button"
-            app:layout_constraintStart_toEndOf="@+id/button2"
-            app:layout_constraintTop_toTopOf="@+id/button2" />
+            app:layout_constraintBottom_toTopOf="@+id/order_btn"
+            app:layout_constraintEnd_toStartOf="@+id/order_btn"
+            app:layout_constraintStart_toEndOf="@+id/shop"
+            app:layout_constraintTop_toTopOf="@+id/shop" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler_search"
