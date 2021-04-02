@@ -52,9 +52,8 @@
             android:layout_marginRight="24dp"
             android:background="@drawable/search_back"
             android:iconifiedByDefault="false"
-            android:queryHint="blah blah"
+            android:queryHint="Search anything..."
             android:searchIcon="@android:drawable/ic_menu_search"
-            android:textColor="#FFFF"
             app:layout_constraintEnd_toEndOf="@+id/drawer_trigger"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="@+id/imageView3"
@@ -77,8 +76,8 @@
                 android:orientation="vertical">
 
                 <TextView
-                    style="@style/Home_screen_style"
                     android:id="@+id/text_category_one"
+                    style="@style/Home_screen_style"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
 
@@ -157,18 +156,17 @@
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler_search"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginTop="16dp"
             android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/order_btn"
+            app:layout_constraintEnd_toEndOf="@+id/searchView2"
+            app:layout_constraintStart_toStartOf="@+id/searchView2"
             app:layout_constraintTop_toBottomOf="@+id/searchView2" />
 
 
         <ImageView
-            android:contentDescription="@string/icon1"
             android:id="@+id/imageView2"
             android:layout_width="match_parent"
             android:layout_height="30dp"
@@ -178,6 +176,7 @@
             android:layout_marginEnd="32dp"
             android:layout_marginRight="32dp"
             android:background="@drawable/search_back"
+            android:contentDescription="@string/icon1"
             android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.52"
@@ -186,24 +185,22 @@
 
 
         <ImageView
-            android:contentDescription="@string/icon2"
             android:id="@+id/imageView4"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:background="@drawable/homescreen_shop_btn_back"
-            android:src="@android:drawable/btn_default_small"
+            android:contentDescription="@string/icon2"
             android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="@+id/imageView2"
             app:layout_constraintStart_toStartOf="@+id/imageView2"
             app:layout_constraintTop_toTopOf="@+id/imageView2" />
 
         <ImageView
-            android:contentDescription="@string/icon3"
             android:id="@+id/imageView5"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:background="@drawable/homescreen_shop_btn_back"
-            android:src="@android:drawable/btn_default_small"
+            android:contentDescription="@string/icon3"
             android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="@+id/imageView2"
             app:layout_constraintEnd_toStartOf="@+id/imageView6"
@@ -211,12 +208,11 @@
             app:layout_constraintTop_toTopOf="@+id/imageView2" />
 
         <ImageView
-            android:contentDescription="@string/icon4"
             android:id="@+id/imageView7"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:background="@drawable/homescreen_shop_btn_back"
-            android:src="@android:drawable/btn_default_small"
+            android:contentDescription="@string/icon4"
             android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="@+id/imageView2"
             app:layout_constraintEnd_toStartOf="@+id/imageView6"
@@ -225,13 +221,12 @@
             app:layout_constraintTop_toTopOf="@+id/imageView2" />
 
         <ImageView
-            android:contentDescription="@string/icon5"
-            android:visibility="gone"
             android:id="@+id/imageView6"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:background="@drawable/sign_up_edit_text_back"
-            android:src="@android:drawable/btn_default_small"
+            android:contentDescription="@string/icon5"
+            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="@+id/imageView2"
             app:layout_constraintEnd_toEndOf="@+id/imageView2"
             app:layout_constraintTop_toTopOf="@+id/imageView2" />
