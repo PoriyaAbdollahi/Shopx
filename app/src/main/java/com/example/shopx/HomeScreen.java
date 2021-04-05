@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
@@ -37,8 +38,10 @@ public class HomeScreen extends AppCompatActivity {
     //category mode objects
     TextView categoryOneText,categoryTwoText,categoryThreeText;
     RecyclerView categoryOne, categoryTwo ,categoryThree;
-    CatAdapter adapter;
 
+    CatAdapter adapter;
+    CatAdapter adapter1;
+    CatAdapter adapter2;
     //search mode objects
     SearchView search;
     RecyclerView searchList;
@@ -82,7 +85,6 @@ public class HomeScreen extends AppCompatActivity {
     private void performingSearch() {
         String a = "https://www.apple.com/newsroom/images/product/iphone/standard/Apple_iphone_11-rosette-family-lineup-091019_big.jpg.medium.jpg";
         List<Product> products =new ArrayList<>();
-
         products.add(new Product("iphone 11", 9999,a,"blahblahblah"));
         products.add(new Product("iphone 14", 9999,a,"blahblahblah"));
         products.add(new Product("iphone 16", 9999,a,"blahblahblah"));
@@ -90,9 +92,10 @@ public class HomeScreen extends AppCompatActivity {
         products.add(new Product("iphone 14", 9999,a,"blahblahblah"));
         products.add(new Product("iphone 13", 9999,a,"blahblahblah"));
         products.add(new Product("iphone 12", 9999,a,"blahblahblah"));
+
         RecyclerView.LayoutManager searchlayoutmanager = new GridLayoutManager(this,2);
         searchList.setLayoutManager(searchlayoutmanager);
-        productAdapter= new ProductAdapter(products);
+        productAdapter= new ProductAdapter(products,this);
         searchList.setAdapter(productAdapter);
 
 
@@ -114,6 +117,7 @@ public class HomeScreen extends AppCompatActivity {
         onOrderRoadClicked();
             }
         });
+        // when search happend
         search.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
@@ -127,6 +131,16 @@ public class HomeScreen extends AppCompatActivity {
                 return false;
             }
         });
+        basket.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBasketClicked();
+            }
+        });
+    }
+
+    private void onBasketClicked() {
+        startActivity(new Intent(this,Basket.class));
     }
 
     private void onShopClicked() {
@@ -212,12 +226,26 @@ public class HomeScreen extends AppCompatActivity {
         productCatItems.add(new ProductCatItem(a,"iphone2",9998));
         productCatItems.add(new ProductCatItem(a,"iphone3",9997));
         productCatItems.add(new ProductCatItem(a,"iphone4",9996));
+
+        //cat1
+        categoryOneText.setText("category1");
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this ,RecyclerView.HORIZONTAL,false);
         categoryOne.setLayoutManager(layoutManager);
         adapter=new CatAdapter(this, productCatItems);
         categoryOne.setAdapter(adapter);
+        //cat2
+        categoryTwoText.setText("category2");
+        RecyclerView.LayoutManager layoutManager1 = new LinearLayoutManager(this ,RecyclerView.HORIZONTAL,false);
+        categoryTwo.setLayoutManager(layoutManager1);
+        adapter1= new CatAdapter(this,productCatItems);
+        categoryTwo.setAdapter(adapter1);
 
-
+        //cat3
+        categoryThreeText.setText("category3");
+        RecyclerView.LayoutManager layoutManager2= new LinearLayoutManager(this ,RecyclerView.HORIZONTAL,false);
+        categoryThree.setLayoutManager(layoutManager2);
+        adapter2=new CatAdapter(this,productCatItems);
+        categoryThree.setAdapter(adapter2);
     }
 
     private void mainButtonInit() {

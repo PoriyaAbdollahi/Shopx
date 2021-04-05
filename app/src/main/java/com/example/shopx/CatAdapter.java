@@ -1,6 +1,7 @@
 package com.example.shopx;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,10 +35,12 @@ public class CatAdapter extends RecyclerView.Adapter<CatAdapter.productHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull productHolder holder, int position) {
-        holder.price.setText(String.valueOf(productCatItems.get(position).getPrice()));
+        String price = productCatItems.get(position).getPrice()+"$";
+        holder.price.setText(price);
         holder.name.setText(productCatItems.get(position).getName());
-        Picasso.get().load(productCatItems.get(position).getProductImage()).into(holder.productImage);
         //we should load image using picasso here
+        Picasso.get().load(productCatItems.get(position).getProductImage()).into(holder.productImage);
+        holder.productImage.setOnClickListener(v -> context.startActivity(new Intent(context,ProductPage.class).putExtra("productName",productCatItems.get(position).getName())));
     }
 
 

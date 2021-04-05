@@ -28,8 +28,8 @@
 
                 <androidx.viewpager.widget.ViewPager
                     android:id="@+id/view_pager"
-                    android:layout_width="match_parent"
-                    android:layout_height="250dp"
+                    android:layout_width="300dp"
+                    android:layout_height="300dp"
                     android:background="@android:drawable/ic_menu_gallery"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -37,6 +37,7 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <ImageView
+                    android:id="@+id/product_page_favorite"
                     android:padding="5dp"
                     android:src="@drawable/favorite_icon"
                     android:contentDescription="@string/favorite"
@@ -52,6 +53,7 @@
 
 
             <TextView
+                android:id="@+id/product_page_productName"
                 android:text="@string/product_name"
                 android:textColor="#fff"
                 android:layout_marginRight="11dp"
@@ -60,6 +62,7 @@
                 android:layout_height="match_parent" />
 
             <TextView
+                android:id="@+id/product_page_price"
                 android:text="@string/product_price"
                 android:textColor="#F80404"
                 android:layout_marginRight="12dp"
@@ -68,6 +71,7 @@
                 android:layout_height="match_parent" />
 
             <TextView
+                android:id="@+id/product_page_desc"
                 android:text="@string/lore"
                 android:textSize="17sp"
                 android:textColor="#fff"
@@ -138,6 +142,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/add_to_cart"
+            android:id="@+id/add_to_cart"
             android:textColor="#ffff"
             android:textSize="20sp"
             android:background="@drawable/product_page_add_to_card_back"

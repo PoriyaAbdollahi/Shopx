@@ -1,5 +1,7 @@
 package com.example.shopx;
 
+import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,11 +24,11 @@ import Model.Product;
 public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.productItemHolder> implements Filterable {
     private List<Product> products;
     private List<Product> productsFull;
-
-    public ProductAdapter(List<Product> products) {
+    private Context context;
+    public ProductAdapter(List<Product> products, Context context) {
         this.products = products;
         productsFull = new ArrayList<>(products);
-
+        this.context=context;
     }
 
     @NonNull
@@ -41,6 +43,10 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.productI
         holder.name.setText(products.get(position).getName());
         holder.price.setText(String.valueOf(products.get(position).getPrice()));
         Picasso.get().load(products.get(position).getImageAddress()).into(holder.productImage);
+
+        holder.productImage.setOnClickListener(v -> context.startActivity(new Intent(context,ProductPage.class).putExtra("productName",products.get(position).getName())));
+
+
     }
 
     @Override
