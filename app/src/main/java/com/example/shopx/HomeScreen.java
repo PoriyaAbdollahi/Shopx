@@ -13,20 +13,29 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.android.material.navigation.NavigationView;
+
+import org.json.JSONArray;
+import org.json.JSONException;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import Model.Product;
 import Model.ProductCatItem;
+import Model.ServerAddress;
 
 
 public class HomeScreen extends AppCompatActivity {
@@ -50,7 +59,6 @@ public class HomeScreen extends AppCompatActivity {
 
 
     //order mode objects
-    ImageView orderRoadBack ,orderRoadOne,orderRoadTwo,orderRoadThree,orderRoadFour;
     RecyclerView orderStatusList;
     //main buttons
     ImageButton shop , order , basket;
@@ -70,7 +78,11 @@ public class HomeScreen extends AppCompatActivity {
         //initializing main buttons
         mainButtonInit();
 
-        setupCatRecycler();
+        //geting  productItems from server
+        List<ProductCatItem> productCatItems = getCatItems();
+
+
+        setupCatRecycler(productCatItems);
 
         // mode 1   category mode  (when user first time enter  || click on shop category )  we should disable mode 2 and 3
         //first should automatic  all category  load when user enter the app
@@ -80,6 +92,41 @@ public class HomeScreen extends AppCompatActivity {
         // when user search
         performingSearch();
 
+    }
+
+    private List<ProductCatItem> getCatItems() {
+       final List<ProductCatItem> productCatItems = new ArrayList<>();
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        JsonArrayRequest jar = new JsonArrayRequest(Request.Method.GET, ServerAddress.address + "getproduct.php?id=1", null, new Response.Listener<JSONArray>() {
+            @Override
+            public void onResponse(JSONArray response) {
+                try {
+                    Log.i("aa",response.getJSONObject(1).getString("product_name"));
+                for (int i = 0 ;i<response.length();i++){
+                   int price = response.getJSONObject(i).getInt("price");
+                   String product_name = response.getJSONObject(i).getString("product_name");
+                   String image = ServerAddress.imageAddress + response.getJSONObject(i).getString("image");
+                   String description = response.getJSONObject(i).getString("description");
+                   ProductCatItem productCatItem = new ProductCatItem(image,product_name,price);
+                   productCatItems.add( productCatItem);
+                   Log.i("aaa",productCatItems.get(0).getName());
+
+                }
+                }catch (JSONException e){
+                    e.getMessage();
+                }
+        Log.i("aaa",String.valueOf(productCatItems.size()));
+                //when response receveid we should call the recycleres to update
+                adapter.notifyDataSetChanged();
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        });
+    requestQueue.add(jar);
+    return  productCatItems;
     }
 
     private void performingSearch() {
@@ -144,21 +191,19 @@ public class HomeScreen extends AppCompatActivity {
     }
 
     private void onShopClicked() {
+
+
         //change color of shop nad order
         order.setBackgroundColor(Color.parseColor("#C5D7BD"));
         shop.setBackgroundColor(Color.parseColor("#007580"));
 
-        // ET the search box
+        // EmT the search box
         search.setQuery("",false);
         search.clearFocus();
         //invisible serach list to user
         searchList.setVisibility(View.GONE);
         //make order road invisible to user
-        orderRoadBack.setVisibility(View.GONE);
-        orderRoadOne.setVisibility(View.GONE);
-        orderRoadTwo.setVisibility(View.GONE);
-        orderRoadThree.setVisibility(View.GONE);
-        orderRoadFour.setVisibility(View.GONE);
+        orderStatusList.setVisibility(View.GONE);
         // make cat visible to user
         categoryOne.setVisibility(View.VISIBLE);
         categoryTwo.setVisibility(View.VISIBLE);
@@ -190,21 +235,13 @@ public class HomeScreen extends AppCompatActivity {
         //invisible serach list to user
         searchList.setVisibility(View.GONE);
         //make road visible to user
-        orderRoadBack.setVisibility(View.VISIBLE);
-        orderRoadOne.setVisibility(View.VISIBLE);
-        orderRoadTwo.setVisibility(View.VISIBLE);
-        orderRoadThree.setVisibility(View.VISIBLE);
-        orderRoadFour.setVisibility(View.VISIBLE);
+       orderStatusList.setVisibility(View.VISIBLE);
         Log.i("mode","mode 2");
     }
 
     private void onUserSearched() {
         //make order road invisilbe to user
-        orderRoadBack.setVisibility(View.GONE);
-        orderRoadOne.setVisibility(View.GONE);
-        orderRoadTwo.setVisibility(View.GONE);
-        orderRoadThree.setVisibility(View.GONE);
-        orderRoadFour.setVisibility(View.GONE);
+
         //make category invisilbe to user
         categoryOne.setVisibility(View.GONE);
         categoryTwo.setVisibility(View.GONE);
@@ -217,34 +254,35 @@ public class HomeScreen extends AppCompatActivity {
         Log.i("mode","mode 3");
     }
 
-    private void setupCatRecycler() {
+    private void setupCatRecycler(List<ProductCatItem> products) {
         //categoryOne a recycler that init
         // a is image photo address from internet
-        String a = "https://www.apple.com/newsroom/images/product/iphone/standard/Apple_iphone_11-rosette-family-lineup-091019_big.jpg.medium.jpg";
-        List<ProductCatItem> productCatItems = new ArrayList<>();
-        productCatItems.add(new ProductCatItem(a,"iphone1",9999));
-        productCatItems.add(new ProductCatItem(a,"iphone2",9998));
-        productCatItems.add(new ProductCatItem(a,"iphone3",9997));
-        productCatItems.add(new ProductCatItem(a,"iphone4",9996));
+       // String a = "https://www.apple.com/newsroom/images/product/iphone/standard/Apple_iphone_11-rosette-family-lineup-091019_big.jpg.medium.jpg";
+        //List<ProductCatItem> productCatItems = new ArrayList<>();
+        //productCatItems.add(new ProductCatItem(a,"iphone1",9999));
+       // productCatItems.add(new ProductCatItem(a,"iphone2",9998));
+       // productCatItems.add(new ProductCatItem(a,"iphone3",9997));
+       // productCatItems.add(new ProductCatItem(a,"iphone4",9996));
 
         //cat1
+
         categoryOneText.setText("category1");
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this ,RecyclerView.HORIZONTAL,false);
         categoryOne.setLayoutManager(layoutManager);
-        adapter=new CatAdapter(this, productCatItems);
+        adapter=new CatAdapter(this, products);
         categoryOne.setAdapter(adapter);
         //cat2
         categoryTwoText.setText("category2");
         RecyclerView.LayoutManager layoutManager1 = new LinearLayoutManager(this ,RecyclerView.HORIZONTAL,false);
         categoryTwo.setLayoutManager(layoutManager1);
-        adapter1= new CatAdapter(this,productCatItems);
+        adapter1= new CatAdapter(this,products);
         categoryTwo.setAdapter(adapter1);
 
         //cat3
         categoryThreeText.setText("category3");
         RecyclerView.LayoutManager layoutManager2= new LinearLayoutManager(this ,RecyclerView.HORIZONTAL,false);
         categoryThree.setLayoutManager(layoutManager2);
-        adapter2=new CatAdapter(this,productCatItems);
+        adapter2=new CatAdapter(this,products);
         categoryThree.setAdapter(adapter2);
     }
 
@@ -255,11 +293,7 @@ public class HomeScreen extends AppCompatActivity {
     }
 
     private void orderModeInit() {
-    orderRoadBack=findViewById(R.id.imageView2);
-    orderRoadOne=findViewById(R.id.imageView4);
-    orderRoadTwo=findViewById(R.id.imageView5);
-    orderRoadThree=findViewById(R.id.imageView7);
-    orderRoadFour=findViewById(R.id.imageView6);
+
     orderStatusList=findViewById(R.id.order_status_recycler);
 
     }
