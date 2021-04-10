@@ -88,6 +88,8 @@ public class HomeScreen extends AppCompatActivity {
         //first should automatic  all category  load when user enter the app
         // mode 2   search mode     (by searching we will go to search mode)  we should disable mode 1 and 3
         // mode 3   order mode       (by clicking on order road icon)   we should disable mode 2 and 1'
+
+        // will change mode
         OnEventHappend();
         // when user search
         performingSearch();
@@ -108,6 +110,7 @@ public class HomeScreen extends AppCompatActivity {
                    String image = ServerAddress.imageAddress + response.getJSONObject(i).getString("image");
                    String description = response.getJSONObject(i).getString("description");
                    ProductCatItem productCatItem = new ProductCatItem(image,product_name,price);
+                   productCatItem.setId(response.getJSONObject(i).getInt("id"));
                    productCatItems.add( productCatItem);
                    Log.i("aaa",productCatItems.get(0).getName());
 
@@ -130,33 +133,31 @@ public class HomeScreen extends AppCompatActivity {
     }
 
     private void performingSearch() {
-        String a = "https://www.apple.com/newsroom/images/product/iphone/standard/Apple_iphone_11-rosette-family-lineup-091019_big.jpg.medium.jpg";
+     //   String a = "https://www.apple.com/newsroom/images/product/iphone/standard/Apple_iphone_11-rosette-family-lineup-091019_big.jpg.medium.jpg";
         List<Product> products =new ArrayList<>();
-        products.add(new Product("iphone 11", 9999,a,"blahblahblah"));
-        products.add(new Product("iphone 14", 9999,a,"blahblahblah"));
-        products.add(new Product("iphone 16", 9999,a,"blahblahblah"));
-        products.add(new Product("iphone 15", 9999,a,"blahblahblah"));
-        products.add(new Product("iphone 14", 9999,a,"blahblahblah"));
-        products.add(new Product("iphone 13", 9999,a,"blahblahblah"));
-        products.add(new Product("iphone 12", 9999,a,"blahblahblah"));
+
 
         RecyclerView.LayoutManager searchlayoutmanager = new GridLayoutManager(this,2);
         searchList.setLayoutManager(searchlayoutmanager);
         productAdapter= new ProductAdapter(products,this);
         searchList.setAdapter(productAdapter);
+        //test
+        // Get the search close button image view
 
 
 
     }
 
     private void OnEventHappend() {
+        //mode 1
         shop.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-        onShopClicked();
+            onShopClicked();
 
             }
         });
+        //mode 3
         order.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -164,20 +165,62 @@ public class HomeScreen extends AppCompatActivity {
         onOrderRoadClicked();
             }
         });
-        // when search happend
+        //mode 2
         search.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
              onUserSearched();
-             productAdapter.getFilter().filter(query);
+           // productAdapter.getFilter().filter(query);
+
+                //this query should send to server and get the result and set the result in recycler view
+                String URl = ServerAddress.address+"search.php?search="+query;
+                RequestQueue requestQueue = Volley.newRequestQueue(HomeScreen.this);
+                JsonArrayRequest jar = new JsonArrayRequest(Request.Method.GET, URl, null, new Response.Listener<JSONArray>() {
+                    @Override
+                    public void onResponse(JSONArray response) {
+                            try {
+                                List<Product> products = new ArrayList<>();
+                                for (int i=0;i<response.length();i++){
+
+                            String name =    response.getJSONObject(i).getString("product_name");
+                            int price =    response.getJSONObject(i).getInt("price");
+                            String image = ServerAddress.imageAddress+ response.getJSONObject(i).getString("image");
+                            String desc = response.getJSONObject(i).getString("description");
+                            Product product = new Product(name,price,image,desc);
+                            product.setId(response.getJSONObject(i).getInt("id"));
+                            products.add(product);
+
+
+
+                            Log.i("searchresult",name);
+
+
+                                }
+                                productAdapter.setProducts(products);
+                            }catch (JSONException e){
+
+                            }
+                    }
+                }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+
+                                Log.i("searchresult",error.getMessage());
+                    }
+                });
+                requestQueue.add(jar);
+
                 return false;
+
             }
+
 
             @Override
             public boolean onQueryTextChange(String newText) {
                 return false;
             }
         });
+
         basket.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -40,7 +40,7 @@ public class CatAdapter extends RecyclerView.Adapter<CatAdapter.productHolder> {
         holder.name.setText(productCatItems.get(position).getName());
         //we should load image using picasso here
         Picasso.get().load(productCatItems.get(position).getProductImage()).into(holder.productImage);
-        holder.productImage.setOnClickListener(v -> context.startActivity(new Intent(context,ProductPage.class).putExtra("productName",productCatItems.get(position).getName())));
+        holder.productImage.setOnClickListener(v -> context.startActivity(new Intent(context,ProductPage.class).putExtra("id",productCatItems.get(position).getId())));
     }
 
 

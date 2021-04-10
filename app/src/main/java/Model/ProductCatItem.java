@@ -3,7 +3,7 @@ package Model;
 import android.widget.ImageView;
 
 public class ProductCatItem {
-
+    int id;
     String productImage;
     int price;
     String name;
@@ -38,5 +38,13 @@ public class ProductCatItem {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 }

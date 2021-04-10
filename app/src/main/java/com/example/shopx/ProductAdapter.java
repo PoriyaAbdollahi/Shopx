@@ -21,14 +21,20 @@ import java.util.List;
 
 import Model.Product;
 
-public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.productItemHolder> implements Filterable {
+public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.productItemHolder> /*implements Filterable*/ {
     private List<Product> products;
-    private List<Product> productsFull;
+   private List<Product> productsFull;
     private Context context;
     public ProductAdapter(List<Product> products, Context context) {
         this.products = products;
         productsFull = new ArrayList<>(products);
         this.context=context;
+
+    }
+
+    public void setProducts(List<Product> products) {
+        this.products = products;
+        notifyDataSetChanged();
     }
 
     @NonNull
@@ -44,7 +50,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.productI
         holder.price.setText(String.valueOf(products.get(position).getPrice()));
         Picasso.get().load(products.get(position).getImageAddress()).into(holder.productImage);
 
-        holder.productImage.setOnClickListener(v -> context.startActivity(new Intent(context,ProductPage.class).putExtra("productName",products.get(position).getName())));
+        holder.productImage.setOnClickListener(v -> context.startActivity(new Intent(context,ProductPage.class).putExtra("id",products.get(position).getId())));
 
 
     }
@@ -53,11 +59,14 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.productI
     public int getItemCount() {
         return products.size();
     }
-
+/*
     @Override
     public Filter getFilter() {
         return filter;
     }
+
+    /*
+
 
     private Filter filter = new Filter() {
         @Override
@@ -87,6 +96,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.productI
             notifyDataSetChanged();
         }
     };
+*/
 
     public static final class productItemHolder extends RecyclerView.ViewHolder {
         ImageView productImage;
