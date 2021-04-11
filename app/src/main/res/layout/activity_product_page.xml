@@ -24,13 +24,15 @@
             android:orientation="vertical">
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
+                android:background="#fff"
                 android:layout_height="wrap_content">
 
-                <androidx.viewpager.widget.ViewPager
+                <ImageView
+                    android:contentDescription="@string/product_photo"
+                    android:scaleType="fitCenter"
                     android:id="@+id/view_pager"
                     android:layout_width="300dp"
                     android:layout_height="300dp"
-                    android:background="@android:drawable/ic_menu_gallery"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -53,6 +55,7 @@
 
 
             <TextView
+                android:layout_marginTop="16dp"
                 android:id="@+id/product_page_productName"
                 android:text="@string/product_name"
                 android:textColor="#fff"

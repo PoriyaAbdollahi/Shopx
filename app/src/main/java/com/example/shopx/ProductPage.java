@@ -1,27 +1,33 @@
 package com.example.shopx;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
-import androidx.viewpager.widget.ViewPager;
 
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.squareup.picasso.Picasso;
 
-import org.json.JSONArray;
 import org.json.JSONException;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import Model.ServerAddress;
 
@@ -29,7 +35,7 @@ public class ProductPage extends AppCompatActivity {
     //we should load this page from everywhere
 
     // a view pager that hold productImage
-    ViewPager productImages;
+    ImageView productImage;
     //a star favorite btn
     ImageView favorite ;
 
@@ -45,10 +51,83 @@ public class ProductPage extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_product_page);
-        getClickedName();
+
+
+        //what if network goes down ?
+
+        //we should load send request to server with name of product that clicked and get result (better use Progressbar)
+        //request info  by id from server
         requestProductInfo();
         Log.i("extrassss", String.valueOf(getIntent().getExtras().getInt("id")));
 
+        productPageInit();
+        //on plus button what gonna happen
+        onPlusClicked();
+        //on negative button what gonna happen
+        onNegativeClicked();
+
+
+
+        //on add to cart button what gonna happen
+        // we should check user login before (server)  if yes  then add the product  to user basket if no then we should send user to login page
+        onAddToCartClicked();
+
+
+
+        // on favorite button what gonna happen
+    }
+
+    private void onAddToCartClicked() {
+        addToCart.setOnClickListener(v -> {
+            //check if user already login
+            //later encrypt
+            SharedPreferences sharedpreferences = getSharedPreferences("userData",Context.MODE_PRIVATE);
+            String email = /*"javadfakhrian@gmail.com";*/sharedpreferences.getString("email","no");
+            String password = /*"123"; */sharedpreferences.getString("password","no");
+
+
+
+
+            if (email.equals("no")||password.equals("no")){
+                //this mean there is no userdata in local :)
+                startActivity(new Intent(ProductPage.this,Login.class));
+            }else if (!email.equals("no")||!password.equals("no")){
+                //aut POST
+                RequestQueue requestQueue = Volley.newRequestQueue(ProductPage.this);
+                StringRequest request = new StringRequest(Request.Method.POST, ServerAddress.address + "auth.php", response -> {
+                    //if equals of
+                    if (response.equals("yes")){
+                        //add product to cart
+                        Log.i("addtocart","add product to cart");
+                    }else if (response.equals("no")){
+                        Log.i("addtocart","send him to login page");
+                        //this is mean there is difference between the server userdata and local
+
+                    }
+
+                }, error -> {
+                //what if network goes down?
+                }){
+                    @Override
+                    public Map<String, String> getHeaders() {
+                        Map<String,String> params = new HashMap<>();
+                        params.put("Content-Type","application/x-www-form-urlencoded");
+                        return params;
+                    }
+
+                    @Nullable
+                    @Override
+                    protected Map<String, String> getParams() {
+                        Map<String,String> params = new HashMap<>();
+                        params.put("email",email);
+                        params.put("password",password);
+                        return params;
+                    }
+                };
+            requestQueue.add(request);
+            }
+            //if need to login
+        });
     }
 
     private void requestProductInfo() {
@@ -57,23 +136,23 @@ public class ProductPage extends AppCompatActivity {
         String id = String.valueOf(getIntent().getExtras().get("id"));
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         JsonArrayRequest jar = new JsonArrayRequest(Request.Method.GET, ServerAddress.address + ServerAddress.getproductbyid+ id, null, response -> {
-        for (int i = 0 ;i<response.length();i++){
+
             try {
-           String n =     response.getJSONObject(i).getString("product_name");
-           String img  =    response.getJSONObject(i).getString("image");
-           String desc =     response.getJSONObject(i).getString("description");
-            int price =    response.getJSONObject(i).getInt("price");
+           String n =     response.getJSONObject(0).getString("product_name");
+           String img  =    response.getJSONObject(0).getString("image");
+           String desc =     response.getJSONObject(0).getString("description");
+            int price =    response.getJSONObject(0).getInt("price");
                 productName.setText(n);
                 productDesc.setText(desc);
                 productPrice.setText(String.valueOf(price));
-                ImageView imageView = new ImageView(this);
-                Picasso.get().load(ServerAddress.imageAddress+img).into(imageView);
-                productImages.setBackground(imageView.getBackground());
-                productImages.notify();
+                //we should load the image
+
+                Picasso.get().load(ServerAddress.imageAddress+img).into(productImage);
+
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-        }
+
 
         }, error -> {
 
@@ -85,28 +164,7 @@ public class ProductPage extends AppCompatActivity {
 
     }
 
-    private void getClickedName() {
 
-
-
-
-        productPageInit();
-        //on plus button what gonna happen
-        onPlusClicked();
-        //on negative button what gonna happen
-        onNegativeClicked();
-        //we should load send request to server with name of product that clicked and get result (better use Progressbar)
-
-
-
-        //on add to cart button what gonna happen
-        // we should check user login before (server)  if yes  then add the product  to user basket if no then we should send user to login page
-
-
-
-
-        // on favorite button what gonna happen
-    }
 
     private void onNegativeClicked() {
         negative.setOnClickListener(v -> {
@@ -123,7 +181,7 @@ public class ProductPage extends AppCompatActivity {
     }
 
     private void productPageInit() {
-        productImages=findViewById(R.id.view_pager);
+        productImage =findViewById(R.id.view_pager);
         favorite=findViewById(R.id.product_page_favorite);
         productName=findViewById(R.id.product_page_productName);
         productPrice=findViewById(R.id.product_page_price);
