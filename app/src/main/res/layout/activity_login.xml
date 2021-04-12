@@ -28,7 +28,7 @@
         android:textColorHint="#D3B6B6"
         android:inputType="text"
         android:padding="15dp"
-        android:hint="@string/user_name"
+        android:hint="@string/email"
         android:id="@+id/login_username"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
