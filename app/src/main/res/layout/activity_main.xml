@@ -9,6 +9,7 @@
 
 
     <ImageView
+
         android:src="@drawable/logo"
         android:id="@+id/imageView"
         android:layout_width="200dp"
@@ -128,7 +129,7 @@
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
         android:gravity="center"
-        android:text="@string/login_if_you_have_account"
+        android:text="@string/Sign_up_if_you_have_account"
         android:textColor="#ffff"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

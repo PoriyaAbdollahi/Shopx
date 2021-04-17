@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -81,9 +82,10 @@ public class ProductPage extends AppCompatActivity {
         addToCart.setOnClickListener(v -> {
             //check if user already login
             //later encrypt
+            //here we should read data from datastore
             SharedPreferences sharedpreferences = getSharedPreferences("userData",Context.MODE_PRIVATE);
-            String email = /*"javadfakhrian@gmail.com";*/sharedpreferences.getString("email","no");
-            String password = /*"123"; */sharedpreferences.getString("password","no");
+            String email = "javadfakhrian@gmail.com";//sharedpreferences.getString("email","no");
+            String password = "123";//s/haredpreferences.getString("password","no");
 
 
 
@@ -96,8 +98,18 @@ public class ProductPage extends AppCompatActivity {
                 RequestQueue requestQueue = Volley.newRequestQueue(ProductPage.this);
                 StringRequest request = new StringRequest(Request.Method.POST, ServerAddress.address + "auth.php", response -> {
                     //if equals of
-                    if (response.equals("yes")){
+                    if (response.contains("yes")){
                         //add product to cart
+                        String gettingUserId = response.substring(3);
+                        String gettingProductId = String.valueOf(getIntent().getExtras().getInt("id"));
+                        Log.i("addtocart",gettingUserId);
+                        Log.i("addtocart",gettingProductId);
+
+                        addToCartRequest(gettingUserId,String.valueOf(counterValue),gettingProductId);
+
+                        //here should we make cart in database
+
+                        // we should check if there is availbe orderlist if yess attach to that if not make one
                         Log.i("addtocart","add product to cart");
                     }else if (response.equals("no")){
                         Log.i("addtocart","send him to login page");
@@ -138,10 +150,10 @@ public class ProductPage extends AppCompatActivity {
         JsonArrayRequest jar = new JsonArrayRequest(Request.Method.GET, ServerAddress.address + ServerAddress.getproductbyid+ id, null, response -> {
 
             try {
-           String n =     response.getJSONObject(0).getString("product_name");
-           String img  =    response.getJSONObject(0).getString("image");
-           String desc =     response.getJSONObject(0).getString("description");
-            int price =    response.getJSONObject(0).getInt("price");
+              String n       =       response.getJSONObject(0).getString("product_name");
+              String img     =    response.getJSONObject(0).getString("image");
+              String desc    =    response.getJSONObject(0).getString("description");
+              int price      =     response.getJSONObject(0).getInt("price");
                 productName.setText(n);
                 productDesc.setText(desc);
                 productPrice.setText(String.valueOf(price));
@@ -191,5 +203,21 @@ public class ProductPage extends AppCompatActivity {
         negative=findViewById(R.id.negative);
         counter=findViewById(R.id.counter);
         counter.setText(String.valueOf(counterValue));
+    }
+    private void addToCartRequest(String id ,String amount,String productId ){
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        
+        String url = ServerAddress.address+"insertorder.php?id="+id+"&"+"amount="+amount+"&product_id="+productId;
+        StringRequest request = new StringRequest(Request.Method.GET,url,response ->{
+
+            Log.i("addtocart",response);
+            if(response.equals("order added")){
+                Toast.makeText(this, "Order added to basket", Toast.LENGTH_SHORT).show();
+                finish();
+
+                startActivity( new Intent(ProductPage.this,Basket.class));
+            }
+        } ,error -> Toast.makeText(this, "Error", Toast.LENGTH_SHORT).show());
+        requestQueue.add(request);
     }
 }
