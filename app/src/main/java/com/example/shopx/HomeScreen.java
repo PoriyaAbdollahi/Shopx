@@ -1,6 +1,7 @@
 package com.example.shopx;
 
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -9,6 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
@@ -93,6 +95,9 @@ public class HomeScreen extends AppCompatActivity {
         OnEventHappend();
         // when user search
         performingSearch();
+
+
+
 
     }
 
@@ -230,7 +235,8 @@ public class HomeScreen extends AppCompatActivity {
     }
 
     private void onBasketClicked() {
-        startActivity(new Intent(this,Basket.class));
+       // startActivity(new Intent(this,Basket.class));
+        startActivityForResult(new Intent(this,Basket.class),2);
     }
 
     private void onShopClicked() {
@@ -259,7 +265,7 @@ public class HomeScreen extends AppCompatActivity {
 
     }
 
-    private void onOrderRoadClicked() {
+    public void onOrderRoadClicked() {
         //change color back
 
        shop.setBackgroundColor(Color.parseColor("#C5D7BD"));
@@ -375,4 +381,11 @@ public class HomeScreen extends AppCompatActivity {
         });
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == 2 ){
+            onOrderRoadClicked();
+        }
+    }
 }

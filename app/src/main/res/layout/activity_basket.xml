@@ -32,10 +32,12 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView2">
     <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/basket_recycler"
         android:layout_margin="10dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
         <TextView
+            android:id="@+id/basket_total"
             android:text="@string/total"
             android:textColor="#fff"
             android:gravity="center"
@@ -56,6 +58,7 @@
         android:layout_marginEnd="16dp"
         android:layout_marginRight="16dp"
         android:layout_marginBottom="16dp"
+        android:id="@+id/check_out"
         android:background="@drawable/sign_up_btn_back"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
