@@ -6,7 +6,9 @@ import androidx.appcompat.widget.AppCompatButton;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -66,7 +68,7 @@ public class Basket extends AppCompatActivity {
 
                         //send user to see the order road
                         Intent intent=new Intent();
-                        setResult(2,intent);
+                        setResult(878787,intent);
                         finish();//finishing activity
 
                     }else if (response.equals("fail")){
@@ -144,7 +146,10 @@ public class Basket extends AppCompatActivity {
             @Override
             protected Map<String, String> getParams() {
                 Map<String,String> params = new HashMap<>();
-                params.put("id","1");
+                SharedPreferences sharedpreferences = getSharedPreferences("userData", Context.MODE_PRIVATE);
+                String id = sharedpreferences.getString("id","no");
+                if (id.equals("no"))return params;
+                params.put("id",id);
                 //user id
                 return params;
             }

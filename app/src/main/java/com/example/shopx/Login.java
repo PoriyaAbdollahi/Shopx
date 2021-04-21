@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -47,8 +48,9 @@ TextView doNotHaveAccount,forgetPassword;
 
     private void OnDoNotHaveAccount() {
     doNotHaveAccount.setOnClickListener(v -> {
-        finish();
-        startActivity(new Intent(Login.this,MainActivity.class));
+    finish();
+   startActivity(new Intent(Login.this,MainActivity.class));
+
     });
     }
 
@@ -59,19 +61,22 @@ TextView doNotHaveAccount,forgetPassword;
     private void onLogin() {
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         StringRequest request = new StringRequest(Request.Method.POST, ServerAddress.address+"login.php", response -> {
-            if (response.equals("status updated")){
-            // if login it was ok we should save login information into shared data
-              //  SharedPreferences sharedpreferences = getSharedPreferences("userData", Context.MODE_PRIVATE);
-              //  SharedPreferences.Editor editor = sharedpreferences.edit();
-              //  editor.putString("email",email.getText().toString().toLowerCase().trim());
-              //  editor.putString("password",password.getText().toString().toLowerCase().trim());
-              //  editor.apply();
+            if (response.length() >= 1 && !response.equals("0")){
+                Log.i("userid",response);
+            //if login it was ok we should save login information into shared data later we should use realm
+              SharedPreferences sharedpreferences = getSharedPreferences("userData", Context.MODE_PRIVATE);
+               SharedPreferences.Editor editor = sharedpreferences.edit();
+                editor.putString("email",email.getText().toString().toLowerCase().trim());
+                editor.putString("password",password.getText().toString().toLowerCase().trim());
+                editor.putString("id",response);
+               editor.apply();
                 // send user to last activity
                 finish();
 
             }else
             // if login it was not ok we should show error
-                if (response.equals("status update failed password or user incorrect")){
+                if (response.equals("0")){
+
                     email.setError("password or email incorrect");
                     //try again
                 }

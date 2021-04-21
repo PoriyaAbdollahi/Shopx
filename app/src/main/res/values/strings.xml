@@ -39,4 +39,10 @@
     <string name="i_don_t_remember_my_password">I don\'t remember my password</string>
     <string name="product_photo">productPhoto</string>
     <string name="basketimage">BasketImage</string>
+    <string name="trashcan">trashcan</string>
+    <string name="date">2021/4/15</string>
+    <string name="inprogress">inProgress</string>
+    <string name="intheway">InTheWay</string>
+    <string name="delivered">Delivered</string>
+    <string name="packing">Packing</string>
 </resources>

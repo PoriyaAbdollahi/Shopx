@@ -1,25 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="100dp"
     android:layout_height="match_parent"
     android:layout_margin="5dp"
     android:orientation="vertical">
 
     <androidx.cardview.widget.CardView
+        android:layout_gravity="center"
         android:layout_width="80dp"
         android:layout_height="80dp"
         android:layout_margin="10dp"
         app:cardCornerRadius="10dp">
 
         <ImageView
+            android:transitionName="product"
             android:id="@+id/cat_img_item"
             android:layout_width="80dp"
             android:layout_height="80dp"
             android:layout_gravity="center"
             android:background="@drawable/cat_item_back"
             android:contentDescription="@string/product_photo"
-            android:scaleType="centerInside" />
+            android:scaleType="centerInside"
+            tools:targetApi="lollipop" />
     </androidx.cardview.widget.CardView>
 
     <TextView

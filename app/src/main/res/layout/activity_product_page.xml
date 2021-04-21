@@ -28,6 +28,7 @@
                 android:layout_height="wrap_content">
 
                 <ImageView
+                    android:transitionName="product"
                     android:contentDescription="@string/product_photo"
                     android:scaleType="fitCenter"
                     android:id="@+id/view_pager"

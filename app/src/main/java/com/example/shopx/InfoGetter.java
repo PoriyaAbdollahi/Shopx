@@ -4,6 +4,8 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -53,12 +55,20 @@ public class InfoGetter extends AppCompatActivity {
             } else {
                 RequestQueue requestQueue = Volley.newRequestQueue(InfoGetter.this);
                 StringRequest request = new StringRequest(Request.Method.POST, ServerAddress.address + "signup.php", response -> {
-                    Toast.makeText(this, response, Toast.LENGTH_SHORT).show();
                     Log.i("infoinfo", response);
-                    if (response.equals("Congratulations! The registration process was successful")){
-                        // we should save the data on local storage
+                    if (response.length() >= 1 && !response.equals("0")) {
+                    Toast.makeText(this, response, Toast.LENGTH_SHORT).show();
+                        // we should save the data on local storage realm later
+                        Log.i("infoinfo", response);
+                        SharedPreferences sharedpreferences = getSharedPreferences("userData", Context.MODE_PRIVATE);
+                        SharedPreferences.Editor editor = sharedpreferences.edit();
+                        editor.putString("email",email);
+                        editor.putString("password",password);
+
+                        editor.putString("id", response);
+                        editor.apply();
                         finish();
-                    }else if (response.equals("A user with this Email Address already exists")){
+                    } else if (response.equals("0")) {
 
                         Toast.makeText(this, response, Toast.LENGTH_SHORT).show();
                     }

@@ -74,7 +74,8 @@ public class ProductPage extends AppCompatActivity {
         onAddToCartClicked();
 
 
-
+        //just setting a title
+        setTitle("ProductPage");
         // on favorite button what gonna happen
     }
 
@@ -84,8 +85,8 @@ public class ProductPage extends AppCompatActivity {
             //later encrypt
             //here we should read data from datastore
             SharedPreferences sharedpreferences = getSharedPreferences("userData",Context.MODE_PRIVATE);
-            String email = "javadfakhrian@gmail.com";//sharedpreferences.getString("email","no");
-            String password = "123";//s/haredpreferences.getString("password","no");
+            String email = /*"javadfakhrian@gmail.com";*/sharedpreferences.getString("email","no");
+            String password = /*"123";*/sharedpreferences.getString("password","no");
 
 
 
@@ -212,10 +213,10 @@ public class ProductPage extends AppCompatActivity {
 
             Log.i("addtocart",response);
             if(response.equals("order added")){
-                Toast.makeText(this, "Order added to basket", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Product added to basket", Toast.LENGTH_SHORT).show();
                 finish();
-
-                startActivity( new Intent(ProductPage.this,Basket.class));
+               // Toast.makeText(this, "Product Added to Basket", Toast.LENGTH_SHORT).show());
+               // startActivity( new Intent(ProductPage.this,Basket.class));
             }
         } ,error -> Toast.makeText(this, "Error", Toast.LENGTH_SHORT).show());
         requestQueue.add(request);

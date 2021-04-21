@@ -31,13 +31,19 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         signUpInit();
         onNextClicked();
-        onAlreadyHaveAccount();
+        //onAlreadyHaveAccount();
 
     }
 
     private void onAlreadyHaveAccount() {
+        youAlreadyHaveAccount.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
         finish();
         startActivity(new Intent(MainActivity.this,Login.class));
+            }
+        });
     }
 
     private void onNextClicked() {

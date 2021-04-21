@@ -3,17 +3,23 @@ package com.example.shopx;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityOptionsCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.Activity;
+import android.app.ActivityOptions;
+import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.Pair;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -21,11 +27,13 @@ import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.android.material.navigation.NavigationView;
 
@@ -33,7 +41,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import Model.Product;
 import Model.ProductCatItem;
@@ -41,6 +51,8 @@ import Model.ServerAddress;
 
 
 public class HomeScreen extends AppCompatActivity {
+    //Logo
+    ImageView logo;
     //drawer objects
     DrawerLayout drawer;
     NavigationView nv;
@@ -56,12 +68,14 @@ public class HomeScreen extends AppCompatActivity {
     //search mode objects
     SearchView search;
     RecyclerView searchList;
-    //test
+
     ProductAdapter productAdapter;
 
 
     //order mode objects
     RecyclerView orderStatusList;
+    OrderRoadAdapter orderRoadAdapter;
+
     //main buttons
     ImageButton shop , order , basket;
 
@@ -69,6 +83,8 @@ public class HomeScreen extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_screen);
+        //initializing logo
+        logoInit();
         //initializing the drawer
         drawerInit();
         //initializing the  category objects
@@ -95,11 +111,18 @@ public class HomeScreen extends AppCompatActivity {
         OnEventHappend();
         // when user search
         performingSearch();
-
+        //just setting a title
+        setTitle("Homescreen");
 
 
 
     }
+
+    private void logoInit() {
+        logo=findViewById(R.id.imageView3);
+    }
+
+
 
     private List<ProductCatItem> getCatItems() {
        final List<ProductCatItem> productCatItems = new ArrayList<>();
@@ -123,9 +146,13 @@ public class HomeScreen extends AppCompatActivity {
                 }catch (JSONException e){
                     e.getMessage();
                 }
-        Log.i("aaa",String.valueOf(productCatItems.size()));
+
                 //when response receveid we should call the recycleres to update
                 adapter.notifyDataSetChanged();
+                // and show the category Title
+                categoryOneText.setText("Category A");
+                categoryTwoText.setText("Category B");
+                categoryThreeText.setText("Category C");
             }
         }, new Response.ErrorListener() {
             @Override
@@ -285,6 +312,52 @@ public class HomeScreen extends AppCompatActivity {
         searchList.setVisibility(View.GONE);
         //make road visible to user
        orderStatusList.setVisibility(View.VISIBLE);
+        //makes the status list
+        List<Integer> order_statuses = new ArrayList<>();
+        //get data from shared p
+        SharedPreferences sharedpreferences = getSharedPreferences("userData", Context.MODE_PRIVATE);
+        String id = sharedpreferences.getString("id","no");
+        if (id.equals("no"))return ;
+
+       //send request for orders
+        RequestQueue orderqueue = Volley.newRequestQueue(this);
+        JsonArrayRequest getRoad = new JsonArrayRequest(Request.Method.GET, ServerAddress.address + "getroad.php?id="+id, null, new Response.Listener<JSONArray>() {
+            @Override
+            public void onResponse(JSONArray response) {
+
+                        Log.i("order_status", String.valueOf(response.length()));
+
+                    try {
+                        for (int i = 0 ; i< response.length();i++){
+                        int status = response.getJSONObject(i).getInt("order_status");
+                            order_statuses.add(status);
+                            System.out.println(status);
+                        }
+                        // this makes the order road adapter understand that we changed some value :)
+                            orderRoadAdapter.notifyDataSetChanged();
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                        Log.i("order_status",e.getMessage());
+                    }
+                }
+
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                System.out.println(error.getMessage());
+                        Log.i("order_status",error.getMessage());
+            }
+        });
+        orderqueue.add(getRoad);
+        //make the adapter
+
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this ,RecyclerView.VERTICAL,false);
+        orderStatusList.setLayoutManager(layoutManager);
+        orderRoadAdapter =new OrderRoadAdapter(order_statuses,this);
+        orderStatusList.setAdapter(orderRoadAdapter);
+        //manage the road
+
         Log.i("mode","mode 2");
     }
 
@@ -300,6 +373,8 @@ public class HomeScreen extends AppCompatActivity {
         categoryThreeText.setVisibility(View.GONE);
         //make search list visible to user
         searchList.setVisibility(View.VISIBLE);
+        //invisble the order list
+        orderStatusList.setVisibility(View.INVISIBLE);
         Log.i("mode","mode 3");
     }
 
@@ -315,20 +390,20 @@ public class HomeScreen extends AppCompatActivity {
 
         //cat1
 
-        categoryOneText.setText("category1");
+       // categoryOneText.setText("category1");
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this ,RecyclerView.HORIZONTAL,false);
         categoryOne.setLayoutManager(layoutManager);
         adapter=new CatAdapter(this, products);
         categoryOne.setAdapter(adapter);
         //cat2
-        categoryTwoText.setText("category2");
+       // categoryTwoText.setText("category2");
         RecyclerView.LayoutManager layoutManager1 = new LinearLayoutManager(this ,RecyclerView.HORIZONTAL,false);
         categoryTwo.setLayoutManager(layoutManager1);
         adapter1= new CatAdapter(this,products);
         categoryTwo.setAdapter(adapter1);
 
         //cat3
-        categoryThreeText.setText("category3");
+      //  categoryThreeText.setText("category3");
         RecyclerView.LayoutManager layoutManager2= new LinearLayoutManager(this ,RecyclerView.HORIZONTAL,false);
         categoryThree.setLayoutManager(layoutManager2);
         adapter2=new CatAdapter(this,products);
@@ -344,6 +419,7 @@ public class HomeScreen extends AppCompatActivity {
     private void orderModeInit() {
 
     orderStatusList=findViewById(R.id.order_status_recycler);
+
 
     }
 
@@ -384,7 +460,7 @@ public class HomeScreen extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == 2 ){
+        if (resultCode == 878787 ){
             onOrderRoadClicked();
         }
     }

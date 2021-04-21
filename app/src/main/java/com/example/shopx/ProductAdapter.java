@@ -1,7 +1,10 @@
 package com.example.shopx;
 
+import android.app.Activity;
+import android.app.ActivityOptions;
 import android.content.Context;
 import android.content.Intent;
+import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +14,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.app.ActivityOptionsCompat;
+import androidx.core.view.ViewCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.squareup.picasso.Picasso;
@@ -25,6 +30,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.productI
     private List<Product> products;
    private List<Product> productsFull;
     private Context context;
+
     public ProductAdapter(List<Product> products, Context context) {
         this.products = products;
         productsFull = new ArrayList<>(products);
@@ -50,8 +56,26 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.productI
         holder.price.setText(String.valueOf(products.get(position).getPrice()));
         Picasso.get().load(products.get(position).getImageAddress()).into(holder.productImage);
 
-        holder.productImage.setOnClickListener(v -> context.startActivity(new Intent(context,ProductPage.class).putExtra("id",products.get(position).getId())));
 
+        holder.productImage.setOnClickListener(new View.OnClickListener() {
+                                                   @Override
+                                                   public void onClick(View v) {
+
+                                                       if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP){
+                                                           //  for lollipop and above versions
+                                                           Pair[] pair = new Pair[1];
+                                                           pair[0] =new Pair<View , String>(holder.itemView,"product");
+                                                           ActivityOptions activityOptions =  ActivityOptions.makeSceneTransitionAnimation((Activity) context,pair);
+                                                           context.startActivity(new Intent(context, ProductPage.class).putExtra("id", products.get(position).getId()),activityOptions.toBundle());
+                                                       } else{
+                                                           // for phones running an SDK before lollipop
+                                                           context.startActivity(new Intent(context, ProductPage.class).putExtra("id", products.get(position).getId()));
+                                                       }
+
+                                                   }
+                                               });
+
+                // Intent intent = new Intent(context,ProductPage.class);
 
     }
 
