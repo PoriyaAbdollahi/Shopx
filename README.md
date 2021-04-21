@@ -1,5 +1,7 @@
 # Shopx
-**This is Just A Ecommeres App **
+ 
+ 
+ 
 This project using volley Library to send requests to the  server 
 and it's pretty fast and Contain Some Animation Between Activity
 For now, Its Using  SharedPrefreces as No SQL DataBase 
